@@ -3,12 +3,10 @@ from datetime import timedelta
 from loguru import logger
 
 from pyspark.sql import SparkSession, functions as F
-from agregaciones import aniade_hora_utc, aniade_intervalos_por_aeropuerto
 
-### Importaciones adicionales
-from motor_ingesta import MotorIngesta
-from agregaciones import aniade_hora_utc, aniade_intervalos_por_aeropuerto
-#############################
+# Descomentar para Ejercicio 4 del notebook
+from .motor_ingesta import MotorIngesta
+from .agregaciones import aniade_hora_utc, aniade_intervalos_por_aeropuerto
 
 class FlujoDiario:
 
@@ -48,7 +46,6 @@ class FlujoDiario:
 
             # Paso 1. Invocamos al método para añadir la hora de salida UTC
             flights_with_utc = aniade_hora_utc(self.spark, flights_df)  # reemplaza por la llamada adecuada
-   
             # -----------------------------
             #  CÓDIGO PARA EL EJERCICIO 4
             # -----------------------------
@@ -93,17 +90,17 @@ class FlujoDiario:
                 .write\
                 .mode("overwrite")\
                 .option("partitionOverwriteMode", "dynamic")\
-                .option("path", self.config.get("output_path", "xxx"))\
+                .option("path", self.config.get("output_path", "output"))\
                 .partitionBy("FlightDate")\
                 .saveAsTable(self.config["output_table"])
 
 
             # Borrar la tabla provisional si la hubiéramos creado
             self.spark.sql("DROP TABLE IF EXISTS tabla_provisional")
-
         except Exception as e:
             logger.error(f"No se pudo escribir la tabla del fichero {data_file}")
             raise e
+
 
 
 if __name__ == '__main__':

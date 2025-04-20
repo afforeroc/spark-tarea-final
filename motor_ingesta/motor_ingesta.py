@@ -34,7 +34,7 @@ class MotorIngesta:
         # Para incluir también el campo "comment" como metadatos de la columna, podemos hacer:
         # F.col(...).cast(...).alias(..., metadata={"comment": ...})
 
-        flights_day_df = self.read.json(json_path, inferSchema=True).cache()
+        flights_day_df = self.spark.read.json(json_path)
 
         aplanado_df = self.aplana_df(flights_day_df)
 

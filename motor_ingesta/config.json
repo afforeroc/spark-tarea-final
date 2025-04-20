@@ -1,0 +1,5 @@
+{
+    "output_table": "flights_test",
+    "output_partitions": 1
+  }
+  

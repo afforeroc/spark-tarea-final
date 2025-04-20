@@ -1,5 +1,4 @@
 .idea
 *.ipynb_checkpoints
 *pycache*
-motor_ingesta/resources/flights_json/*
-motor_ingesta/resources/flights-jan-apr-2018/*
+data/*

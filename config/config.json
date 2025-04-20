@@ -92,7 +92,6 @@
       "comment": "Distance between airports (miles)"
     }
   ],
-
   "output_table": "default.flights",
   "output_partitions": 10,
   "EXECUTION_ENVIRONMENT": "local"

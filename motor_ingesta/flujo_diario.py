@@ -12,8 +12,11 @@ class FlujoDiario:
 
     def __init__(self, config_file: str):
         """
-        Completa la documentación
-        :param config_file:
+        Inicializa una instancia de FlujoDiario cargando la configuración desde un archivo JSON
+        y creando una SparkSession si no existe una activa.
+
+        :param config_file: Ruta al fichero JSON de configuración con los nombres de las columnas, 
+        tipos de datos y claves como 'output_table' etc.
         """
         # Leer como diccionario el fichero json indicado en la ruta config_file, usando json.load(f) del paquete json
         # y almacenarlo en self.config. Además, crear la SparkSession si no existiese usando
@@ -26,9 +29,16 @@ class FlujoDiario:
 
     def procesa_diario(self, data_file: str):
         """
-        Completa la documentación
-        :param data_file:
-        :return:
+        Procesa un archivo diario de vuelos aplicando transformaciones y guardando el resultado en una tabla gestionada de Spark.
+        Las operaciones incluyen:
+        - Ingesta del fichero con MotorIngesta.
+        - Cálculo de la hora de vuelo en UTC según zona horaria.
+        - Lectura del día anterior (si existe) para completar información faltante.
+        - Cálculo del siguiente vuelo por aeropuerto y su diferencia horaria.
+        - Escritura del resultado final en una tabla externa particionada por FlightDate.
+
+        :param data_file: Ruta al archivo JSON con los datos de vuelos del día.
+        :return: None. El resultado se guarda en la tabla especificada en la configuración.
         """
 
         try:

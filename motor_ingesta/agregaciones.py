@@ -6,11 +6,15 @@ import pandas as pd
 
 def aniade_hora_utc(spark: SparkSession, df: DF) -> DF:
     """
-    Completa la documentación
-    :param spark:
-    :param df:
-    :param fichero_timezones:
-    :return:
+    Añade una columna FlightTime en formato UTC combinando la fecha y hora local de salida de cada vuelo,
+    teniendo en cuenta la zona horaria del aeropuerto de origen.
+    Se utiliza un fichero CSV con los timezones asociados a los códigos IATA para realizar la conversión
+    mediante `F.to_utc_timestamp`.
+
+    :param spark: Instancia activa de SparkSession.
+    :param df: DataFrame de entrada con al menos las columnas ['Origin', 'FlightDate', 'DepTime'].
+    :param fichero_timezones: CSV de los timezones de varios países.
+    :return: DataFrame con una nueva columna 'FlightTime' en UTC, y sin columnas auxiliares ni metadata de timezone.
     """
 
     # Antes de empezar el ejercicio 2, debemos unir a los vuelos la zona horaria del aeropuerto de salida del vuelo,
@@ -90,9 +94,13 @@ def aniade_hora_utc(spark: SparkSession, df: DF) -> DF:
 
 def aniade_intervalos_por_aeropuerto(df: DF) -> DF:
     """
-    Completa la documentación
-    :param df:
-    :return:
+    Añade información sobre el siguiente vuelo que parte del mismo aeropuerto (Origin), incluyendo la hora
+    y aerolínea del siguiente vuelo, así como la diferencia en segundos respecto al vuelo actual.
+    Utiliza una ventana particionada por 'Origin' y ordenada por 'FlightTime', junto con `lag` negativo para
+    calcular esta información.
+
+    :param df: DataFrame con al menos las columnas ['Origin', 'FlightTime', 'Reporting_Airline'].
+    :return: DataFrame original con tres columnas adicionales: 'FlightTime_next', 'Airline_next' y 'diff_next'.
     """
     # ----------------------------------------
     # FUNCIÓN PARA EL EJERCICIO 3 (2 puntos)

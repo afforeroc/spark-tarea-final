@@ -6,21 +6,26 @@ from pyspark.sql.types import DateType, IntegerType, StringType, BooleanType
 
 class MotorIngesta:
     """
-    Completar docstring
+    Clase encargada de realizar la ingesta de archivos de vuelos en formato JSON, aplanar estructuras anidadas
+    y seleccionar las columnas indicadas en la configuración, aplicando los tipos de datos adecuados.
     """
     def __init__(self, config: dict):
         """
-        Completar docstring
-        :param config_file:
+        Inicializa el motor de ingesta con una configuración específica y crea una SparkSession.
+
+        :param config: Diccionario de configuración que debe contener al menos la clave "data_columns",
+        con una lista de diccionarios describiendo las columnas esperadas en el archivo de entrada.
         """
         self.config = config
         self.spark = SparkSession.builder.getOrCreate()
 
     def ingesta_fichero(self, json_path: str) -> DF:
         """
-        Completar docstring
-        :param json_path:
-        :return:
+        Lee un archivo JSON con datos de vuelos, aplana estructuras anidadas y selecciona las columnas
+        indicadas en la configuración, aplicando los tipos de datos y metadatos correspondientes.
+
+        :param json_path: Ruta al archivo JSON que contiene los datos de vuelos.
+        :return: DataFrame de Spark con las columnas seleccionadas y tipadas según configuración.
         """
         # Leemos el JSON como DF, tratando de inferir el esquema, y luego lo aplanamos.
         # Por último nos quedamos con las columnas indicadas en el fichero de configuración,
